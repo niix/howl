@@ -4,12 +4,13 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
-
-var app = express();
+  , routes  = require('./routes')
+  , user    = require('./routes/user')
+  , http    = require('http')
+  , path    = require('path')
+  , app     = require('express')()
+  , server  = require('http').createServer(app)
+  , io      = require('socket.io').listen(server);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
