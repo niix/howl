@@ -7,8 +7,34 @@
   </head>
   <body>
     <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
-  </body>
 
-  <script src="/socket.io/socket.io.js"></script>
+    <div class="username-wrapper">
+      <form id="set-username">
+        <input class="username" placeholder="username">
+        <button class="usersend">Connect</button>
+      </form>
+      <p class="username-error">That name is taken!</p>
+    </div>
+    
+    <div class="main">
+      <div class="users">
+        <b>Users</b>
+        <div class="users-list"></div>
+      </div>
+
+      <div class="messages">
+        <div class="conversation"></div>
+      </div>
+
+      <div class="send-chat">
+        <input class="data">
+        <input type="button" class="datasend" value="send">
+      </div>
+    </div>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/howl.js"></script>
+  </body>
 </html>

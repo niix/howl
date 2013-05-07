@@ -39,7 +39,35 @@ var httpServer = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(httpServer);
 
+var usernames = {};
+
 // socket.io
 io.sockets.on('connection', function (socket) {
-  // Do magic..
+
+  // client sends to chat
+  socket.on('sendchat', function (data) {
+    io.sockets.emit('updatechat', socket.username, data);
+  });
+
+  // client connects
+  socket.on('adduser', function (username, fn) {
+    if (usernames[username]) {
+      fn(true);
+    } else {
+      socket.username = username;
+      usernames[username] = username;
+      socket.emit('updatechat', 'Server', 'you have connected.');
+      socket.broadcast.emit('updatechat', 'Server', username + ' has connected.');
+      io.sockets.emit('updateusers', usernames);
+      fn(false);
+    }
+  });
+
+  // client disconnects
+  socket.on('disconnect', function () {
+    delete usernames[socket.username];
+    io.sockets.emit('updateusers', usernames);
+    socket.broadcast.emit('updatechat', 'Server', socket.username + ' has disconnected.');
+  });
+
 });
