@@ -5,6 +5,11 @@ function makeSocketDomain (url, port) {
      return q[1] + "://" + q[2] + (port ? (":" + port) : (q[3]?""+q[3]:""));
 }
 
+// Prevent scrolling
+document.body.addEventListener("touchmove", function(e){
+    e.preventDefault();
+}, false);
+
 var domain = makeSocketDomain();
 var socket = io.connect(domain);
 

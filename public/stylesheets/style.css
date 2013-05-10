@@ -23,6 +23,7 @@ a {
   font-size: 12px;
   background-color: #4a565f;
   color: #e4ecf2;
+  overflow: auto;
 }
 .username-wrapper .username {
   background-color: #3f4850;
