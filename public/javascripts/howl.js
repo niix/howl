@@ -14,7 +14,7 @@ var domain = makeSocketDomain();
 var socket = io.connect(domain);
 
 socket.on('updatechat', function (username, data) {
-    $('.conversation').append('<b>' + username + ':</b> ' + data + '<br>');
+    $('.conversation').append('<li><b>' + username + ':</b> ' + data + '</li>');
 });
 
 socket.on('updateusers', function (data) {
@@ -50,4 +50,8 @@ $(function () {
             $('.datasend').focus().click();
         }
     });
+
+    // iScroll
+    document.addEventListener('touchmove', function(e){ e.preventDefault(); });
+    myScroll = new iScroll('scroller');
 });

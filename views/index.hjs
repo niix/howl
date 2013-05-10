@@ -35,8 +35,13 @@
         
 
         <div class="main">
-          <div class="messages">
-            <div class="conversation"></div>
+
+          <div id="wrapper">
+            <div class="messages">
+              <div id="scroller">
+               <ul class="conversation"></ul>
+              </div>
+            </div>
           </div>
 
           <div class="send-chat">
@@ -54,5 +59,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/howl.js"></script>
     <script src="/javascripts/ratchet.js"></script>
+    <script src="/javascripts/iscroll.js"></script>
   </body>
 </html>

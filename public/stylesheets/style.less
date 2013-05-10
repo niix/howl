@@ -45,12 +45,28 @@ a {
     }
 }
 
+.conversation ul {
+    list-style:none;
+    padding:0;
+    margin:0;
+    width:100%;
+    text-align:left;
+}
+
+.conversation li {
+    background-color: #3f4850;
+
+    &:nth-child(odd) { 
+        background-color: #4a565f; 
+    }
+}
+
 .send-chat {
 
     .data {
         background-color: #3f4850;
         color: #e4ecf2;
-        border: 0px solid #3f4850;
+        border: 1px solid #666;
         border-radius: 0px;
         box-shadow: 0 0 0;
     }
@@ -70,6 +86,7 @@ a {
 
 .content {
     background-image: url(../images/bg.png);
+    background-color: #707579;
     background-size: cover;
     overflow: hidden;
 }
@@ -82,4 +99,14 @@ a {
 
 .button-howl {
   background-color: #fff;
+}
+
+#wrapper {
+    position:relative;
+    z-index:1;
+    width:/* your desired width, auto and 100% are fine */;
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #666;
+    border-bottom: 0;
 }
