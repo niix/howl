@@ -37,7 +37,7 @@
         <div class="main">
 
           <div id="wrapper">
-            <div class="messages">
+            <div class="messages" id="messages">
               <div id="scroller">
                <ul class="conversation"></ul>
               </div>

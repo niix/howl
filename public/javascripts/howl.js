@@ -14,7 +14,9 @@ var domain = makeSocketDomain();
 var socket = io.connect(domain);
 
 socket.on('updatechat', function (username, data) {
+    var messages = document.getElementById('messages');
     $('.conversation').append('<li><b>' + username + ':</b> ' + data + '</li>');
+    messages.scrollTop = messages.scrollHeight;
 });
 
 socket.on('updateusers', function (data) {
