@@ -2,39 +2,57 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Howl">
+
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/touch-icons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/touch-icons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/touch-icons/apple-touch-icon-57x57.png">
+
+    <link rel="stylesheet" href="/stylesheets/ratchet.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1>{{ title }}</h1>
 
-    <div class="username-wrapper">
-      <form id="set-username">
-        <input class="username" placeholder="username">
-        <button class="usersend">Connect</button>
-      </form>
-      <p class="username-error">That name is taken!</p>
+    <header class="bar-title">
+        <h1 class="title">{{ title }}</h1>
+    </header>
+
+    <div class="content">
+      <div class="content-padded">
+
+        <div class="username-wrapper">
+          <form id="set-username">
+            <div class="input-group">
+              <input class="username" type="text" placeholder="Username">
+            </div>
+            <button class="usersend button-positive button-block">Connect</button>
+          </form>
+          <p class="username-error">That name is taken!</p>
+        </div>
+        
+
+        <div class="main">
+          <div class="messages">
+            <div class="conversation"></div>
+          </div>
+
+          <div class="send-chat">
+            <input class="data" type="text" placeholder="Your message">
+            <button class="datasend button-positive button-block">Send</button>
+          </div>
+        </div>
+
+      </div>
     </div>
-    
-    <div class="main">
-      <div class="users">
-        <b>Users</b>
-        <div class="users-list"></div>
-      </div>
 
-      <div class="messages">
-        <div class="conversation"></div>
-      </div>
-
-      <div class="send-chat">
-        <input class="data">
-        <input type="button" class="datasend" value="send">
-      </div>
-    </div>
 
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/howl.js"></script>
+    <script src="/javascripts/ratchet.js"></script>
   </body>
 </html>
