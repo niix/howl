@@ -44,6 +44,7 @@ $(function () {
         var message = data.val();
         data.val('');
         socket.emit('sendchat', message);
+        data.focus();
     });
 
     $('.data').keypress(function (e) {
