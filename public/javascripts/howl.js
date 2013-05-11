@@ -1,42 +1,42 @@
+function howl(){
 
-// Get socket domain and port
-function makeSocketDomain (url, port) {
-     var q = (url||document.URL).match(/([^:]+):\/\/([^:\/]*)(:[0-9]+)?(\/)/);
-     return q[1] + "://" + q[2] + (port ? (":" + port) : (q[3]?""+q[3]:""));
+    var domain = makeSocketDomain();
+    var socket = io.connect(domain);
+
+    function init(){
+        // Prevent scrolling
+        document.body.addEventListener("touchmove", function(e){
+            e.preventDefault();
+        }, false);
+
+        socket.on('updatechat', updatechat);
+
+        socket.on('updateusers', updateusers);
+
+        // iScroll
+        document.addEventListener('touchmove', function(e){ e.preventDefault(); });
+        myScroll = new iScroll('scroller');
+    }
+
+    function updatechat(username, data) {
+        var messages = document.getElementById('messages');
+        $('.conversation').append('<li><b>' + username + ':</b> ' + data + '</li>');
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function updateusers(data) {
+        $('.users-list').empty();
+        $.each(data, function(key, value) {
+            $('.users-list').append('<div>' + key + '</div>');
+        });
+    }
+
+    // Get socket domain and port
+    function makeSocketDomain (url, port) {
+         var q = (url||document.URL).match(/([^:]+):\/\/([^:\/]*)(:[0-9]+)?(\/)/);
+         return q[1] + "://" + q[2] + (port ? (":" + port) : (q[3]?""+q[3]:""));
+    }
 }
-
-// Prevent scrolling
-document.body.addEventListener("touchmove", function(e){
-    e.preventDefault();
-}, false);
-
-var domain = makeSocketDomain();
-var socket = io.connect(domain);
-
-socket.on('updatechat', function (username, data) {
-    var messages = document.getElementById('messages');
-    $('.conversation').append('<li><b>' + username + ':</b> ' + data + '</li>');
-    messages.scrollTop = messages.scrollHeight;
-});
-
-socket.on('updateusers', function (data) {
-    $('.users-list').empty();
-    $.each(data, function(key, value) {
-        $('.users-list').append('<div>' + key + '</div>');
-    });
-});
-
-$('#set-username').submit(function (ev) {
-    socket.emit('adduser', $('.username').val(), function (set) {
-        if (!set) {
-            $('.username-wrapper').hide();
-            return $('.main').show();
-        } else {
-           return $('.username-error').show();
-        }
-    });
-    return false;
-});
 
 $(function () {
     $('.datasend').click(function () {
@@ -53,8 +53,16 @@ $(function () {
             $('.datasend').focus().click();
         }
     });
+    $('#set-username').submit(function (ev) {
+        socket.emit('adduser', $('.username').val(), function (set) {
+            if (!set) {
+                $('.username-wrapper').hide();
+                return $('.main').show();
+            } else {
+               return $('.username-error').show();
+            }
+        });
+        return false;
+    });
 
-    // iScroll
-    document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-    myScroll = new iScroll('scroller');
 });
