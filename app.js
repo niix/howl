@@ -46,7 +46,9 @@ io.sockets.on('connection', function (socket) {
 
   // client sends to chat
   socket.on('sendchat', function (data) {
-    io.sockets.emit('updatechat', socket.username, data);
+    if (data) {
+      io.sockets.emit('updatechat', socket.username, data);
+    }
   });
 
   // client connects
