@@ -53,15 +53,17 @@ io.sockets.on('connection', function (socket) {
 
   // client connects
   socket.on('adduser', function (username, fn) {
-    if (usernames[username]) {
-      fn(true);
-    } else {
-      socket.username = username;
-      usernames[username] = username;
-      socket.emit('updatechat', 'Server', 'you have connected.');
-      socket.broadcast.emit('updatechat', 'Server', username + ' has connected.');
-      io.sockets.emit('updateusers', usernames);
-      fn(false);
+    if (username) {
+      if (usernames[username]) {
+        fn(true);
+      } else {
+        socket.username = username;
+        usernames[username] = username;
+        socket.emit('updatechat', 'Server', 'you have connected.');
+        socket.broadcast.emit('updatechat', 'Server', username + ' has connected.');
+        io.sockets.emit('updateusers', usernames);
+        fn(false);
+      }
     }
   });
 
