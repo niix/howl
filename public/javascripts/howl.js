@@ -3,19 +3,17 @@ function howl(){
     var domain = makeSocketDomain();
     var socket = io.connect(domain);
 
-    function init(){
-        // Prevent scrolling
-        document.body.addEventListener("touchmove", function(e){
-            e.preventDefault();
-        }, false);
+    socket.on('updatechat', updatechat);
+    socket.on('updateusers', updateusers);
 
-        socket.on('updatechat', updatechat);
+    // iScroll
+    document.addEventListener('touchmove', function(e){ e.preventDefault(); });
+    myScroll = new iScroll('scroller');
 
-        socket.on('updateusers', updateusers);
-
-        // iScroll
-        document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-        myScroll = new iScroll('scroller');
+    // Get socket domain and port
+    function makeSocketDomain (url, port) {
+         var q = (url||document.URL).match(/([^:]+):\/\/([^:\/]*)(:[0-9]+)?(\/)/);
+         return q[1] + "://" + q[2] + (port ? (":" + port) : (q[3]?""+q[3]:""));
     }
 
     function updatechat(username, data) {
@@ -31,38 +29,59 @@ function howl(){
         });
     }
 
-    // Get socket domain and port
-    function makeSocketDomain (url, port) {
-         var q = (url||document.URL).match(/([^:]+):\/\/([^:\/]*)(:[0-9]+)?(\/)/);
-         return q[1] + "://" + q[2] + (port ? (":" + port) : (q[3]?""+q[3]:""));
-    }
+    this.sendMessage = function (message) {
+        socket.emit('sendchat', message);
+    };
+
+    this.setUsername = function (info) {
+        var dfd = $.Deferred();
+
+        socket.emit('adduser', info.un, function(set){
+            dfd.resolve(set);
+        });
+
+        return dfd.promise();
+    };
 }
 
 $(function () {
-    $('.datasend').click(function () {
+    // Prevent scrolling
+    document.body.addEventListener("touchmove", function(e){
+        e.preventDefault();
+    }, false);
+
+    var Howl = new howl();
+
+    // Bindings
+    $('.datasend').click(function(){
         var data = $('.data');
         var message = data.val();
         data.val('');
-        socket.emit('sendchat', message);
         data.focus();
+        Howl.sendMessage(message);
     });
 
     $('.data').keypress(function (e) {
+        // watch for enter key
         if (e.which === 13) {
             $(this).blur();
             $('.datasend').focus().click();
         }
     });
-    $('#set-username').submit(function (ev) {
-        socket.emit('adduser', $('.username').val(), function (set) {
+
+    $('#set-username').click(function(e){
+        e.preventDefault();
+        var options = {
+            "un": $('.username').val()
+        };
+        $.when(Howl.setUsername(options)).then(function(set){
             if (!set) {
                 $('.username-wrapper').hide();
-                return $('.main').show();
+                $('.main').show();
             } else {
-               return $('.username-error').show();
+                $('.username-error').show();
             }
+            $('.data').focus();
         });
-        return false;
     });
-
 });
