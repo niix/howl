@@ -39,7 +39,7 @@ var httpServer = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(httpServer);
 
-var usernames = {};
+var usernames = [];
 
 // socket.io
 io.sockets.on('connection', function (socket) {
@@ -58,7 +58,10 @@ io.sockets.on('connection', function (socket) {
         fn(true);
       } else {
         socket.username = username;
-        usernames[username] = username;
+        usernames.push({
+          "id": socket.id,
+          "username": username
+        });
         socket.emit('updatechat', 'Server', 'you have connected.');
         socket.broadcast.emit('updatechat', 'Server', username + ' has connected.');
         io.sockets.emit('updateusers', usernames);
