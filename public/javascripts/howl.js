@@ -29,8 +29,19 @@ function howl(){
         });
     }
 
+    this.getLocation = function(callback) {
+        navigator.geolocation.getCurrentPosition(function(position, error) {
+            if (error) return callback(err);
+            return callback(null, position);
+        });
+    };
+
     this.sendMessage = function (message) {
         socket.emit('sendchat', message);
+    };
+
+    this.sendLocation = function(location) {
+        socket.emit('location', location);
     };
 
     this.setUsername = function (info) {
@@ -56,8 +67,7 @@ $(function () {
     $('.datasend').click(function(){
         var data = $('.data');
         var message = data.val();
-        data.val('');
-        data.focus();
+        data.val('').focus();
         Howl.sendMessage(message);
     });
 
@@ -76,8 +86,15 @@ $(function () {
         };
         $.when(Howl.setUsername(options)).then(function(set){
             if (!set) {
-                $('.username-wrapper').hide();
-                $('.main').show();
+                Howl.getLocation(function(err, position){
+                    // Error
+                    if (err !== null) return err;
+                    // Success
+                    $.when(Howl.sendLocation(position)).done(function(){
+                        $('.username-wrapper').hide();
+                        $('.main').show();
+                    });
+                });
             } else {
                 $('.username-error').show();
             }
