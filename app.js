@@ -70,6 +70,11 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  // client sends location
+  socket.on('location', function(position) {
+    socket.emit('position', position);
+  });
+
   // client disconnects
   socket.on('disconnect', function () {
     delete usernames[socket.username];
